@@ -2,14 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Gerenciador de tarefas - inserir nova tarefa</title>
+    <title>Gerenciador de tarefas - alterar nova tarefa</title>
     <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
 </head>
 <body>
 <div th:replace="fragmentos/fragmentos :: cabecalho"></div>
 <div class="container">
-    <h3>Inserção de nova tarefa</h3>
-    <form class="form-horizontal" action="/tarefas/inserir" method="post" th:object="${tarefa}">
+    <h3>Alteração de nova tarefa</h3>
+    <form class="form-horizontal" action="/tarefas/alterar" method="post" th:object="${tarefa}">
+        <input type="hidden" th:field="*{id}">
         <div class="row">
             <div class="form-group col-md-6">
                 <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('titulo')}">
