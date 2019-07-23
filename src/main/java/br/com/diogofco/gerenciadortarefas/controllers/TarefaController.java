@@ -1,7 +1,9 @@
 package br.com.diogofco.gerenciadortarefas.controllers;
 
 import br.com.diogofco.gerenciadortarefas.models.Tarefa;
+import br.com.diogofco.gerenciadortarefas.models.Usuario;
 import br.com.diogofco.gerenciadortarefas.repository.RepositoryTarefa;
+import br.com.diogofco.gerenciadortarefas.servicos.ServicoUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Comparator;
 import java.util.Date;
@@ -23,11 +26,16 @@ public class TarefaController {
     @Autowired
     private RepositoryTarefa repositoryTarefa;
 
+    @Autowired
+    private ServicoUsuario servicoUsuario;
+
     @GetMapping("/listar")
-    public ModelAndView listar() {
+    public ModelAndView listar(HttpServletRequest request) {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("tarefas/listar");
-        mv.addObject("tarefas", repositoryTarefa.findAll(Sort.by(Sort.Direction.DESC, "dataExpiracao")));
+        String emailUsuario = request.getUserPrincipal().getName();
+        //mv.addObject("tarefas", repositoryTarefa.findAll(Sort.by(Sort.Direction.DESC, "dataExpiracao")));
+        mv.addObject("tarefas", repositoryTarefa.getTarefasPorUsuario(emailUsuario));
         return mv;
     }
 
@@ -40,7 +48,7 @@ public class TarefaController {
     }
 
     @PostMapping("/inserir")
-    public ModelAndView inserir(@Valid Tarefa tarefa, BindingResult result) {
+    public ModelAndView inserir(@Valid Tarefa tarefa, BindingResult result, HttpServletRequest request) {
         ModelAndView mv = new ModelAndView();
 
         if (tarefa.getDataExpiracao() == null) {
@@ -57,8 +65,11 @@ public class TarefaController {
             mv.setViewName("tarefas/inserir");
             mv.addObject(tarefa);
         } else {
-            mv.setViewName("redirect:/tarefas/listar");
+            Usuario usuarioLogado = servicoUsuario.encontrarPorEmail(request.getUserPrincipal().getName());
+            tarefa.setUsuario(usuarioLogado);
             repositoryTarefa.save(tarefa);
+
+            mv.setViewName("redirect:/tarefas/listar");
         }
         return mv;
     }
