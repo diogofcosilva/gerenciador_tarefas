@@ -3,7 +3,6 @@ package br.com.diogofco.gerenciadortarefas.controllers;
 import br.com.diogofco.gerenciadortarefas.models.Usuario;
 import br.com.diogofco.gerenciadortarefas.servicos.ServicoUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;

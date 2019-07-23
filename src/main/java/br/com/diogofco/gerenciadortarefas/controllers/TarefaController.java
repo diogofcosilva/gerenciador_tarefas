@@ -5,7 +5,6 @@ import br.com.diogofco.gerenciadortarefas.models.Usuario;
 import br.com.diogofco.gerenciadortarefas.repository.RepositoryTarefa;
 import br.com.diogofco.gerenciadortarefas.servicos.ServicoUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Comparator;
 import java.util.Date;
 
 @Controller
